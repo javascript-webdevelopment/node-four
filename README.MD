@@ -41,7 +41,7 @@ On an endpoint we can setup a middlware function that is only invoked when a spe
 We can chain multiple request level middleware functions onto an endpoint before we hit the handler function. This works just like the TLM function that we wrote above. The RLM function will take in `req`, `res`, and `next` as arguments.
 
 ```js
-aap.get('/api/rlm', function(req,res,next){
+app.get('/api/rlm', function(req,res,next){
     console.log('callback one')
     next();
 }, function(req,res,next){
@@ -54,3 +54,33 @@ aap.get('/api/rlm', function(req,res,next){
 ```
 
 Above we have two RLM functions being executed before we hit our handler function and send b ack a response to our front end.
+
+These middleware functions are great because we can use it to check for specific conditions to allow a user to keep moving on in the end point. A great example of this is setting up a middleware function to authenticate a user to login.
+
+```js
+// Dummy Data
+let user = {
+    username: 'tayte123',
+    password: 'password123',
+    full_name: 'Tayte Stokes',
+    color: 'black'
+};
+
+// Custom Middleware Functions
+const authenticateUser = (req, res, next) => {
+    const {username, password} = req.body;
+    if(username === user.username && password === user.password){
+        // if username and password matches
+        // invoke next and pass in the user and move onto the next function in the end point
+        next()
+    } else {
+        res.status(403).send('Invalid username or password');
+    };
+};
+
+// End Point to login
+app.post('/api/login', authenticateUser, (req, res) => {
+    // send back user object
+    res.status(200).send(user);
+});
+```
