@@ -34,6 +34,15 @@ app.use((req, res, next) => {
 
 In the example above we are just passing in an annonymous function, however we can declare that function elsewhere and pass it in.
 
+We can pass an optional path as an argument to our `app.use()` function to specify what end points to use the midleware function on.
+
+```js
+app.use('/api/users', (req, res, next) => {
+    console.log('user route hit!')
+    next();
+})
+```
+
 ### Request Level
 
 On an endpoint we can setup a middlware function that is only invoked when a specific enpoint is hit. This is referred to as `request level middleware`.

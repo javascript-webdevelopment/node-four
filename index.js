@@ -8,6 +8,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Custom TLM
+app.use('/api/users', (req, res, next) => {
+    console.log('user route hit!');
+    next();
+});
+
 // Dummy Data
 let user = {
     username: 'tayte123',
@@ -27,7 +33,10 @@ const authenticateUser = (req, res, next) => {
     }
 };
 
-// End Point to login
+app.get('/api/users', (req, res) => {
+    res.status(200).send('no users here sorry')
+})
+
 app.post('/api/login', authenticateUser, (req, res) => {
     // send back user object
     res.status(200).send(user);
