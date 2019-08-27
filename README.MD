@@ -191,3 +191,14 @@ app.listen(8080, () => {
     console.log('Server Running!');
 });
 ```
+
+### Destroying A Session
+
+We can destroy a server session by using the built in `destroy` method from the session.
+
+```js
+app.get('/api/logout' (req, res) => {
+    req.session.destroy();
+    res.status(200).send('user has been logged out');
+});
+```
